@@ -5,8 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "build": "mkdir dist && npm install && tsc",
-    "dev": "nodemon src/index.ts"
+    "build": "mkdir dist && npm install && tsc"
   },
   "keywords": [],
   "author": "",
