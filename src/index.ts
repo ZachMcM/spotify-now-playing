@@ -12,7 +12,7 @@ app.get("/", async (req, res) => {
   const nowPlaying = await getNowPlaying();
 
   if (!nowPlaying) {
-    return res.status(204)
+    return res.status(500).json({ error: "An error occurred while fetching data from Spotify" })
   }
 
   return res.json({
