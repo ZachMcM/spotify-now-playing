@@ -1,6 +1,3 @@
-const TOKEN_URL = "https://accounts.spotify.com/api/token"
-const NOW_PLAYING_URL = "https://api.spotify.com/v1/me/player/currently-playing"
-
 const clientId = process.env.SPOTIFY_CLIENT_ID
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
 const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN
@@ -8,7 +5,7 @@ const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN
 const basic = Buffer.from(`${clientId}:${clientSecret}`).toString("base64")
 
 async function getAccessToken() {
-  const res = await fetch(TOKEN_URL, {
+  const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
       "Authorization": `Basic ${basic}`,
@@ -29,11 +26,15 @@ async function getAccessToken() {
 export async function getNowPlaying() {
   const accessToken = await getAccessToken()
 
-  const res = await fetch(NOW_PLAYING_URL, {
+  const res = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
     headers: {
       "Authorization": `Bearer ${accessToken}`,
     }
   })
+
+  if (res.status === 204) {
+    return null
+  }
 
   const data = await res.json()
 
