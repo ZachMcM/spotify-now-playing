@@ -35,10 +35,20 @@ export async function getNowPlaying() {
   })
 
   if (res.status === 204) {
-    return null
+    console.log("No content")
+
+    const data = fs.readFileSync("data.json")
+    return JSON.parse(data.toString())
   }
 
   const data = await res.json()
+
+  fs.writeFile("data.json", JSON.stringify(data), (err) => {
+    if (err) {
+      console.error(err)
+      throw new Error(err.message)
+    }
+  })
 
   console.log(data)
   return data
