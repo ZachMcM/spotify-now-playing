@@ -5,10 +5,9 @@ const clientId = process.env.SPOTIFY_CLIENT_ID
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
 const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN
 
-const basic = btoa(`${clientId}:${clientSecret}`)
+const basic = Buffer.from(`${clientId}:${clientSecret}`).toString("base64")
 
 async function getAccessToken() {
-  console.log(basic)
   const res = await fetch(TOKEN_URL, {
     method: "POST",
     headers: {
@@ -22,13 +21,13 @@ async function getAccessToken() {
   })
 
   const data = await res.json()
-
+  
+  console.log(data)
   return data.access_token
 }
 
 export async function getNowPlaying() {
   const accessToken = await getAccessToken()
-  console.log(accessToken)
 
   const res = await fetch(NOW_PLAYING_URL, {
     headers: {
